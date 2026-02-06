@@ -1,0 +1,1131 @@
+{
+  "info": {
+    "_postman_id": "7d19a331-116a-4433-b7b2-2b763dae9ca7",
+    "name": "LMS-CIT E2E Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50281854",
+    "_collection_link": "https://go.postman.co/collection/50281854-7d19a331-116a-4433-b7b2-2b763dae9ca7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "admin login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Admin login - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Admin login - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Admin login - Response has user object', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('user');",
+              "    pm.expect(jsonData.user).to.have.property('role');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"Add user\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user_id\": \"ADMIN01\",\r\n  \"password\": \"password\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/auth/login",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Add user - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Add user - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Add user - Response has message', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"admin logout\");",
+              "",
+              "pm.test('Add user - Status code is 200 or 409 (user may already exist)', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([",
+              "        200,",
+              "        409",
+              "    ]);",
+              "})",
+              "",
+              "pm.test('Add user - Response has ok=true or user already exists message', function () {",
+              "    const jsonData = pm.response.json();",
+              "    if (pm.response.code === 200) {",
+              "        pm.expect(jsonData.ok).to.eql(true);",
+              "    } else if (pm.response.code === 409) {",
+              "        pm.expect(jsonData).to.have.property('message');",
+              "        pm.expect(jsonData.message.toLowerCase()).to.include('already exists');",
+              "    }",
+              "})"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user_id\": \"TEST10\",\r\n  \"name\": \"Faculty1\",\r\n  \"email\": \"faculty@example.com\",\r\n  \"password\": \"secret123\",\r\n  \"role\": \"faculty\",\r\n  \"department_code\": \"CSE\",\r\n  \"designation\": \"Teacher\",\r\n  \"phone\": \"78874283423\",\r\n  \"date_joined\": \"2019-01-10\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/add-user",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "add-user"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Admin logout - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Admin logout - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"user login\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/api/auth/logout",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('User login - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Response has user object with role', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('user');",
+              "    pm.expect(jsonData.user).to.have.property('role');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"Apply leave\");"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Ensure URL uses baseURL variable",
+              "if (pm.request.url.toString().startsWith('http://localhost:3000')) {",
+              "  pm.request.url = pm.request.url.toString().replace('http://localhost:3000', pm.environment.get('baseURL') || 'http://localhost:3000');",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_id",
+              "value": "TEST10",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "secret123",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/auth/login",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Apply leave",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Apply leave - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Apply leave - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Apply leave - Response has leave_id', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('leave_id');",
+              "});",
+              "",
+              "// Extract and save leave_id for subsequent requests",
+              "const jsonData = pm.response.json();",
+              "if (jsonData.leave_id) {",
+              "    pm.environment.set(\"leave_id\", jsonData.leave_id);",
+              "}",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"user logout\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"leave_type\": \"Earned Leave\",\r\n  \"start_date\": \"2026-02-01\",\r\n  \"start_session\": \"Full\",\r\n  \"end_date\": \"2026-02-03\",\r\n  \"end_session\": \"Full\",\r\n  \"reason\": \"Family function\",\r\n  \"arr1_dept\": \"CSE\",\r\n  \"arr1_faculty\": \"FAC002\",\r\n  \"arr1_details\": \"1st DEC - AI lectures\",\r\n  \"arr2_dept\": \"CSE\",\r\n  \"arr2_faculty\": \"FAC003\",\r\n  \"arr2_details\": \"2nd DEC - ML lab\",\r\n  \"arr3_dept\": \"\",\r\n  \"arr3_faculty\": \"\",\r\n  \"arr3_details\": \"\",\r\n  \"arr4_dept\": \"\",\r\n  \"arr4_faculty\": \"\",\r\n  \"arr4_details\": \"\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/apply",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "apply"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "user logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('User logout - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('User logout - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"sub login\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/api/auth/logout",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "sub login",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Sub login - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Sub login - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Sub login - Response has user object', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('user');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"get arrangement_id\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_id",
+              "value": "FAC002",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "password",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/auth/login",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get arrangement_id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Get arrangement_id - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Get arrangement_id - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Get arrangement_id - Response has requests array', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('requests');",
+              "    pm.expect(jsonData.requests).to.be.an('array');",
+              "});",
+              "",
+              "// Extract arrangement_id from the first request in the array",
+              "const jsonData = pm.response.json();",
+              "if (jsonData.requests && jsonData.requests.length > 0) {",
+              "    const arrangementId = jsonData.requests[0].arrangement_id;",
+              "    pm.environment.set(\"arrangement_id\", arrangementId);",
+              "    ",
+              "    // Also save leave_id if available",
+              "    if (jsonData.requests[0].leave_id) {",
+              "        pm.environment.set(\"leave_id\", jsonData.requests[0].leave_id);",
+              "    }",
+              "}",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"Sub approve\");"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/api/substitute/requests",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "substitute",
+            "requests"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Sub approve",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Sub approve - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Sub approve - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Sub approve - Response has message', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"sub logout\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "url": {
+          "raw": "{{baseURL}}/api/substitute/accept/{{arrangement_id}}",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "substitute",
+            "accept",
+            "{{arrangement_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "sub logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Sub logout - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Sub logout - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"HOD login\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/api/auth/logout",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "HOD login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HOD login - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('HOD login - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('HOD login - Response has user object', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('user');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"HOD approve\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_id",
+              "value": "HODCSE01",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "password",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/auth/login",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "HOD approve",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HOD approve - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('HOD approve - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('HOD approve - Response has message', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"HOD logout\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "url": {
+          "raw": "{{baseURL}}/api/hod/approve/{{leave_id}}",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "hod",
+            "approve",
+            "{{leave_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "HOD logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HOD logout - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('HOD logout - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"Principal Login\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/api/auth/logout",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Principal Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Principal Login - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Principal Login - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Principal Login - Response has user object', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('user');",
+              "});",
+              "",
+              "pm.test('Principal Login - User has principal role', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.user.role).to.eql('principal');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"Principal approve\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_id",
+              "value": "PRINC001",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "password",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/auth/login",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Principal approve",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Principal approve - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Principal approve - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "// Set next request in workflow - Delete user comes AFTER Principal approve",
+              "pm.execution.setNextRequest(\"admin login Copy\");",
+              "",
+              "pm.test('Principal approve - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    const hasOk = jsonData.hasOwnProperty('ok') && jsonData.ok === true;",
+              "    const hasMessage = jsonData.hasOwnProperty('message');",
+              "    pm.expect(hasOk || hasMessage).to.be.true;",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "url": {
+          "raw": "{{baseURL}}/api/admin/approve/{{leave_id}}",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "approve",
+            "{{leave_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin login Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Admin login - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Admin login - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Admin login - Response has user object', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('user');",
+              "    pm.expect(jsonData.user).to.have.property('role');",
+              "});",
+              "",
+              "// Set next request in workflow",
+              "pm.execution.setNextRequest(\"Delete user\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user_id\": \"ADMIN01\",\r\n  \"password\": \"password\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/auth/login",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete user",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Delete user - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Delete user - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "pm.test('Delete user - Response has message', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('message');",
+              "});",
+              "",
+              "// Set next request in workflow - Principal logout is the final step",
+              "pm.execution.setNextRequest(\"Principal logout\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"user_id\": \"TEST10\",\r\n  \"name\": \"Faculty1\",\r\n  \"email\": \"faculty@example.com\",\r\n  \"password\": \"secret123\",\r\n  \"role\": \"faculty\",\r\n  \"department_code\": \"CSE\",\r\n  \"designation\": \"Teacher\",\r\n  \"phone\": \"78874283423\",\r\n  \"date_joined\": \"2019-01-10\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/api/admin/delete-user/TEST10",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "delete-user",
+            "TEST10"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Principal logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Principal logout - Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Principal logout - Response has ok=true', function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.ok).to.eql(true);",
+              "});",
+              "",
+              "// End of workflow - stop execution",
+              "pm.execution.setNextRequest(null);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/api/auth/logout",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Collection-level tests for LMS-CIT E2E Tests",
+          "// These tests run after every request in the collection",
+          "",
+          "pm.test('Response time is under 5 seconds', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "",
+          "pm.test('Response is valid JSON', function () {",
+          "    pm.response.to.be.json;",
+          "});",
+          "",
+          "pm.test('Response status is not a server error (5xx)', function () {",
+          "    pm.expect(pm.response.code).to.be.below(500);",
+          "});",
+          "",
+          "pm.test('Response has Content-Type header', function () {",
+          "    pm.response.to.have.header('Content-Type');",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Collection pre-request script",
+          "// Nothing here to mutate requests at runtime. Sequencing is handled in per-request tests via pm.setNextRequest."
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

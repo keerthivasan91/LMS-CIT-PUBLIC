@@ -1,0 +1,50 @@
+{
+  "FACULTY": {
+    "code": "FACULTY",
+    "description": "Teaching staff who can apply for leave",
+    "permissions": [
+      "leave.apply",
+      "leave.view.self",
+      "profile.view",
+      "profile.update"
+    ]
+  },
+
+  "HOD": {
+    "code": "HOD",
+    "description": "Head of Department",
+    "permissions": [
+      "leave.view.department",
+      "leave.approve.hod",
+      "leave.reject.hod",
+      "leave.escalate",
+      "leave.view.self",
+      "profile.view"
+    ]
+  },
+
+  "PRINCIPAL": {
+    "code": "PRINCIPAL",
+    "description": "Final authority for leave approval",
+    "permissions": [
+      "leave.view.all",
+      "leave.approve.principal",
+      "leave.reject.principal",
+      "leave.view.self"
+    ]
+  },
+
+  "ADMIN": {
+    "code": "ADMIN",
+    "description": "System administrator",
+    "permissions": [
+      "user.create",
+      "user.update",
+      "user.delete",
+      "user.view",
+      "leave.view.all",
+      "reports.generate",
+      "system.configure"
+    ]
+  }
+}
