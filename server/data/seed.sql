@@ -126,84 +126,76 @@ UPDATE departments SET hod_id = 'HODLIB01' WHERE department_code = 'LIB';
 -- =====================================================================
 -- HOLIDAYS (Academic Year 2025-2026 with realistic distribution)
 -- =====================================================================
-INSERT INTO holidays (date, name, description, academic_year) VALUES
--- 2025 Holidays
-('2025-01-01', 'New Year''s Day', 'New Year Celebration', 2025),
-('2025-01-14', 'Pongal', 'Harvest Festival', 2025),
-('2025-01-15', 'Tamil Thai Pongal Day', 'State Holiday', 2025),
-('2025-01-26', 'Republic Day', 'National Holiday', 2025),
-('2025-03-08', 'Maha Shivaratri', 'Religious Holiday', 2025),
-('2025-03-29', 'Good Friday', 'Religious Holiday', 2025),
-('2025-04-14', 'Tamil New Year', 'Regional New Year', 2025),
-('2025-05-01', 'Labour Day', 'International Workers Day', 2025),
-('2025-06-15', 'Eid al-Fitr', 'Religious Holiday (approx date)', 2025),
-('2025-08-15', 'Independence Day', 'National Holiday', 2025),
-('2025-09-05', 'Teacher''s Day', 'Institution Holiday', 2025),
-('2025-10-02', 'Gandhi Jayanti', 'National Holiday', 2025),
-('2025-10-23', 'Vijayadashami', 'Dussehra', 2025),
-('2025-12-25', 'Christmas', 'Festival Holiday', 2025),
-
--- 2026 Holidays (for forward planning)
-('2026-01-01', 'New Year''s Day', 'New Year Celebration', 2026),
-('2026-01-14', 'Pongal', 'Harvest Festival', 2026),
-('2026-01-26', 'Republic Day', 'National Holiday', 2026),
-('2026-03-25', 'Holi', 'Festival of Colors', 2026),
-('2026-04-02', 'Good Friday', 'Religious Holiday', 2026),
-('2026-04-14', 'Tamil New Year', 'Regional New Year', 2026),
-('2026-08-15', 'Independence Day', 'National Holiday', 2026),
-('2026-10-02', 'Gandhi Jayanti', 'National Holiday', 2026),
-('2026-12-25', 'Christmas', 'Festival Holiday', 2026);
+INSERT INTO holidays (date, name, type, academic_year) VALUES
+('2026-01-01', 'New Year''s Day', 'RH', 2026),
+('2026-01-14', 'Makar Sankranti / Pongal', 'PUBLIC', 2026),
+('2026-01-26', 'Republic Day', 'PUBLIC', 2026),
+('2026-02-15', 'Maha Shivaratri', 'RH', 2026),
+('2026-03-04', 'Holi', 'PUBLIC', 2026),
+('2026-03-19', 'Ugadi', 'PUBLIC', 2026),
+('2026-03-21', 'Id-ul-Fitr', 'PUBLIC', 2026),
+('2026-03-28', 'Ram Navami', 'RH', 2026),
+('2026-03-31', 'Mahavir Jayanti', 'PUBLIC', 2026),
+('2026-04-03', 'Good Friday', 'PUBLIC', 2026),
+('2026-05-01', 'May Day', 'PUBLIC', 2026),
+('2026-05-27', 'Id-ul-Zuha (Bakrid)', 'PUBLIC', 2026),
+('2026-08-15', 'Independence Day', 'PUBLIC', 2026),
+('2026-08-26', 'Id-e-Milad', 'PUBLIC', 2026),
+('2026-09-14', 'Ganesh Chaturthi', 'PUBLIC', 2026),
+('2026-10-02', 'Mahatma Gandhi Jayanti', 'PUBLIC', 2026),
+('2026-10-20', 'Dussehra (Vijayadashami)', 'PUBLIC', 2026),
+('2026-11-01', 'Karnataka Rajyotsava', 'PUBLIC', 2026),
+('2026-11-08', 'Diwali (Deepavali)', 'PUBLIC', 2026),
+('2026-12-25', 'Christmas Day', 'PUBLIC', 2026);
 
 -- =====================================================================
 -- LEAVE_REQUESTS (Realistic mix of statuses and scenarios)
 -- =====================================================================
-INSERT INTO leave_requests (user_id, department_code, leave_type, start_date, start_session, end_date, end_session, reason, hod_status, principal_status, final_status, applied_on) VALUES
+INSERT INTO leave_requests (user_id, department_code, leave_type, start_date, start_session, end_date, end_session, reason, days, hod_status, principal_status, final_status, applied_on) VALUES
 -- PENDING REQUESTS (for testing approval flows)
-('FAC001', 'CSE', 'Casual Leave', '2025-04-10', 'Forenoon', '2025-04-10', 'Afternoon', 'Medical checkup', 'pending', NULL, 'pending', '2025-03-28 09:15:00'),
-('FAC002', 'CSE', 'Earned Leave', '2025-04-15', 'Forenoon', '2025-04-17', 'Afternoon', 'Family function', 'pending', NULL, 'pending', '2025-03-29 10:30:00'),
-('FAC003', 'CSE', 'OOD', '2025-04-20', 'Forenoon', '2025-04-21', 'Afternoon', 'Conference attendance', 'pending', NULL, 'pending', '2025-03-30 11:45:00'),
-('FAC006', 'ECE', 'Casual Leave', '2025-04-05', 'Afternoon', '2025-04-05', 'Afternoon', 'Personal work', 'pending', NULL, 'pending', '2025-03-27 14:20:00'),
-('FAC010', 'MECH', 'Earned Leave', '2025-06-01', 'Forenoon', '2025-06-05', 'Afternoon', 'Summer vacation with family', 'pending', NULL, 'pending', '2025-05-20 10:00:00'),
-('FAC012', 'CIVIL', 'OOD', '2025-06-15', 'Forenoon', '2025-06-16', 'Forenoon', '1.5 days for house warming', 'pending', NULL, 'pending', '2025-06-01 14:15:00'),
-
+('FAC001', 'CSE', 'Casual Leave', '2025-04-10', 'Forenoon', '2025-04-10', 'Afternoon', 'Medical checkup', 4,  'pending', NULL, 'pending', '2025-03-28 09:15:00'),
+('FAC002', 'CSE', 'Earned Leave', '2025-04-15', 'Forenoon', '2025-04-17', 'Afternoon', 'Family function', 3, 'pending', NULL, 'pending', '2025-03-29 10:30:00'),
+('FAC003', 'CSE', 'OOD', '2025-04-20', 'Forenoon', '2025-04-21', 'Afternoon', 'Conference attendance', 2, 'pending', NULL, 'pending', '2025-03-30 11:45:00'),
+('FAC006', 'ECE', 'Casual Leave', '2025-04-05', 'Afternoon', '2025-04-05', 'Afternoon', 'Personal work', 0.5, 'pending', NULL, 'pending', '2025-03-27 14:20:00'),
+('FAC010', 'MECH', 'Earned Leave', '2025-06-01', 'Forenoon', '2025-06-05', 'Afternoon', 'Summer vacation with family', 5, 'pending', NULL, 'pending', '2025-05-20 10:00:00'),
+('FAC012', 'CIVIL', 'OOD', '2025-06-15', 'Forenoon', '2025-06-16', 'Forenoon', '1.5 days for house warming', 1.5, 'pending', NULL, 'pending', '2025-06-01 14:15:00'),
 -- APPROVED REQUESTS (with HOD approval)
-('FAC001', 'CSE', 'Casual Leave', '2025-03-10', 'Forenoon', '2025-03-10', 'Afternoon', 'Dentist appointment', 'approved', NULL, 'approved', '2025-03-05 09:30:00'),
-('FAC002', 'CSE', 'Earned Leave', '2025-03-12', 'Forenoon', '2025-03-14', 'Afternoon', 'Vacation', 'approved', NULL, 'approved', '2025-03-01 10:15:00'),
-('FAC007', 'ECE', 'Casual Leave', '2025-03-18', 'Forenoon', '2025-03-18', 'Afternoon', 'Vehicle service', 'approved', NULL, 'approved', '2025-03-10 11:40:00'),
-('FAC009', 'MECH', 'Special Casual Leave', '2025-03-22', 'Forenoon', '2025-03-22', 'Afternoon', 'Wedding ceremony', 'approved', NULL, 'approved', '2025-03-15 14:25:00'),
-('FAC011', 'CIVIL', 'Casual Leave', '2025-06-10', 'Afternoon', '2025-06-10', 'Afternoon', 'Half day for personal work', 'approved', NULL, 'approved', '2025-05-25 11:30:00'),
-('FAC014', 'ECE', 'Earned Leave', '2025-06-20', 'Forenoon', '2025-06-22', 'Afternoon', 'Traveling to hometown', 'approved', NULL, 'approved', '2025-06-05 09:50:00'),
-('FAC016', 'CSE', 'Casual Leave', '2025-06-25', 'Forenoon', '2025-06-25', 'Afternoon', 'Attending a workshop', 'approved', NULL, 'approved', '2025-06-10 10:40:00'),
-('FAC018', 'ECE', 'Special Casual Leave', '2025-06-30', 'Forenoon', '2025-06-30', 'Afternoon', 'Cultural event participation', 'approved', NULL, 'approved', '2025-06-15 13:55:00'),
-('FAC020', 'CHEM', 'Earned Leave', '2025-07-05', 'Forenoon', '2025-07-07', 'Afternoon', 'Family function out of town', 'approved', NULL, 'approved', '2025-06-20 09:10:00'),
-('FAC019', 'PHYSICS', 'Restricted Holiday', '2025-07-10', 'Afternoon', '2025-07-10', 'Afternoon', 'Personal errands', 'approved', NULL, 'approved', '2025-06-25 11:20:00'),
-('FAC015', 'MATH', 'OOD', '2025-07-15', 'Forenoon', '2025-07-16', 'Afternoon', 'Attending seminar at IIT Madras', 'approved', NULL, 'approved', '2025-07-01 10:05:00'),
-('FAC011', 'LIB', 'Vacation Leave', '2025-07-20', 'Forenoon', '2025-07-20', 'Afternoon', 'Medical appointment', 'approved', NULL, 'approved', '2025-07-05 14:30:00'),
-('FAC012', 'MGMT', 'Earned Leave', '2025-07-25', 'Forenoon', '2025-07-27', 'Afternoon', 'Attending a workshop in Bangalore', 'approved', NULL, 'approved', '2025-07-10 09:45:00'),
-
+('FAC001', 'CSE', 'Casual Leave', '2025-03-10', 'Forenoon', '2025-03-10', 'Afternoon', 'Dentist appointment', 1, 'approved', NULL, 'approved', '2025-03-05 09:30:00'),
+('FAC002', 'CSE', 'Earned Leave', '2025-03-12', 'Forenoon', '2025-03-14', 'Afternoon', 'Vacation', 3, 'approved', NULL, 'approved', '2025-03-01 10:15:00'),
+('FAC007', 'ECE', 'Casual Leave', '2025-03-18', 'Forenoon', '2025-03-18', 'Afternoon', 'Vehicle service', 1, 'approved', NULL, 'approved', '2025-03-10 11:40:00'),
+('FAC009', 'MECH', 'Special Casual Leave', '2025-03-22', 'Forenoon', '2025-03-22', 'Afternoon', 'Wedding ceremony', 1, 'approved', NULL, 'approved', '2025-03-15 14:25:00'),
+('FAC011', 'CIVIL', 'Casual Leave', '2025-06-10', 'Afternoon', '2025-06-10', 'Afternoon', 'Half day for personal work', 0.5, 'approved', NULL, 'approved', '2025-05-25 11:30:00'),
+('FAC014', 'ECE', 'Earned Leave', '2025-06-20', 'Forenoon', '2025-06-22', 'Afternoon', 'Traveling to hometown', 3, 'approved', NULL, 'approved', '2025-06-05 09:50:00'),
+('FAC016', 'CSE', 'Casual Leave', '2025-06-25', 'Forenoon', '2025-06-25', 'Afternoon', 'Attending a workshop', 1, 'approved', NULL, 'approved', '2025-06-10 10:40:00'),
+('FAC018', 'ECE', 'Special Casual Leave', '2025-06-30', 'Forenoon', '2025-06-30', 'Afternoon', 'Cultural event participation', 1, 'approved', NULL, 'approved', '2025-06-15 13:55:00'),
+('FAC020', 'CHEM', 'Earned Leave', '2025-07-05', 'Forenoon', '2025-07-07', 'Afternoon', 'Family function out of town', 3, 'approved', NULL, 'approved', '2025-06-20 09:10:00'),
+('FAC019', 'PHYSICS', 'Restricted Holiday', '2025-07-10', 'Afternoon', '2025-07-10', 'Afternoon', 'Personal errands', 1, 'approved', NULL, 'approved', '2025-06-25 11:20:00'),
+('FAC015', 'MATH', 'OOD', '2025-07-15', 'Forenoon', '2025-07-16', 'Afternoon', 'Attending seminar at IIT Madras', 2, 'approved', NULL, 'approved', '2025-07-01 10:05:00'),
+('FAC011', 'LIB', 'Vacation Leave', '2025-07-20', 'Forenoon', '2025-07-20', 'Afternoon', 'Medical appointment', 1, 'approved', NULL, 'approved', '2025-07-05 14:30:00'),
+('FAC012', 'MGMT', 'Earned Leave', '2025-07-25', 'Forenoon', '2025-07-27', 'Afternoon', 'Attending a workshop in Bangalore', 3, 'approved', NULL, 'approved', '2025-07-10 09:45:00'),
 -- REJECTED REQUESTS (with HOD rejection)
-('FAC003', 'CSE', 'Casual Leave', '2025-03-25', 'Forenoon', '2025-03-26', 'Afternoon', 'Personal trip', 'rejected', NULL, 'rejected', '2025-03-20 08:45:00'),
-('FAC008', 'ECE', 'Earned Leave', '2025-03-28', 'Forenoon', '2025-03-30', 'Afternoon', 'Family vacation', 'rejected', NULL, 'rejected', '2025-03-18 10:10:00'),
+('FAC003', 'CSE', 'Casual Leave', '2025-03-25', 'Forenoon', '2025-03-26', 'Afternoon', 'Personal trip', 6, 'rejected', NULL, 'rejected', '2025-03-20 08:45:00'),
+('FAC008', 'ECE', 'Earned Leave', '2025-03-28', 'Forenoon', '2025-03-30', 'Afternoon', 'Family vacation', 3, 'rejected', NULL, 'rejected', '2025-03-18 10:10:00'),
 
 -- REQUIRING PRINCIPAL APPROVAL (OOD with HOD approved)
-('FAC004', 'CSE', 'OOD', '2025-05-10', 'Forenoon', '2025-05-12', 'Afternoon', 'Research paper presentation at IIT Delhi', 'approved', 'pending', 'pending', '2025-04-25 09:00:00'),
-('FAC005', 'CSE', 'OOD', '2025-05-15', 'Forenoon', '2025-05-18', 'Afternoon', 'International conference in Singapore', 'approved', 'pending', 'pending', '2025-04-28 10:30:00'),
+('FAC004', 'CSE', 'OOD', '2025-05-10', 'Forenoon', '2025-05-12', 'Afternoon', 'Research paper presentation at IIT Delhi', 3, 'approved', 'pending', 'pending', '2025-04-25 09:00:00'),
+('FAC005', 'CSE', 'OOD', '2025-05-15', 'Forenoon', '2025-05-18', 'Afternoon', 'International conference in Singapore', 4, 'approved', 'pending', 'pending', '2025-04-28 10:30:00'),
 
 -- PRINCIPAL APPROVED (OOD requests)
-('FAC001', 'CSE', 'OOD', '2025-02-10', 'Forenoon', '2025-02-12', 'Afternoon', 'Workshop at Anna University', 'approved', 'approved', 'approved', '2025-01-25 11:15:00'),
-('FAC002', 'CSE', 'OOD', '2025-02-20', 'Forenoon', '2025-02-22', 'Afternoon', 'Industry visit to TCS Chennai', 'approved', 'approved', 'approved', '2025-01-30 14:45:00'),
+('FAC001', 'CSE', 'OOD', '2025-02-10', 'Forenoon', '2025-02-12', 'Afternoon', 'Workshop at Anna University', 3, 'approved', 'approved', 'approved', '2025-01-25 11:15:00'),
+('FAC002', 'CSE', 'OOD', '2025-02-20', 'Forenoon', '2025-02-22', 'Afternoon', 'Industry visit to TCS Chennai', 3, 'approved', 'approved', 'approved', '2025-01-30 14:45:00'),
 
 -- CANCELLED LEAVES
-('FAC003', 'CSE', 'Casual Leave', '2025-03-05', 'Forenoon', '2025-03-05', 'Afternoon', 'Event postponed', 'approved', NULL, 'cancelled', '2025-02-28 09:20:00'),
-
+('FAC003', 'CSE', 'Casual Leave', '2025-03-05', 'Forenoon', '2025-03-05', 'Afternoon', 'Event postponed', 1, 'approved', NULL, 'cancelled', '2025-02-28 09:20:00'),
+('FAC007', 'ECE', 'Earned Leave', '2025-04-01', 'Forenoon', '2025-04-03', 'Afternoon', 'Personal reasons', 3, 'approved', NULL, 'cancelled', '2025-03-25 10:50:00'),
 -- STAFF LEAVE REQUESTS (for role testing)
-('STAFF01', 'CSE', 'Casual Leave', '2025-04-08', 'Forenoon', '2025-04-08', 'Afternoon', 'Medical appointment', 'approved', NULL, 'approved', '2025-03-30 08:45:00'),
-('STAFF02', 'ADMIN', 'Earned Leave', '2025-04-25', 'Forenoon', '2025-04-28', 'Afternoon', 'Family wedding', 'pending', NULL, 'pending', '2025-04-10 10:20:00'),
-('STAFF12', 'CSE', 'Casual Leave', '2025-04-12', 'Afternoon', '2025-04-12', 'Afternoon', 'Vehicle registration', 'approved', NULL, 'approved', '2025-04-01 14:30:00'),
+('STAFF01', 'CSE', 'Casual Leave', '2025-04-08', 'Forenoon', '2025-04-08', 'Afternoon', 'Medical appointment', 1, 'approved', NULL, 'approved', '2025-03-30 08:45:00'),
+('STAFF02', 'ADMIN', 'Earned Leave', '2025-04-25', 'Forenoon', '2025-04-28', 'Afternoon', 'Family wedding', 4, 'pending', NULL, 'pending', '2025-04-10 10:20:00'),
+('STAFF12', 'CSE', 'Casual Leave', '2025-04-12', 'Afternoon', '2025-04-12', 'Afternoon', 'Vehicle registration', 1, 'approved', NULL, 'approved', '2025-04-01 14:30:00'),
 
 -- RECENT LEAVES (for current date testing)
-('FAC001', 'CSE', 'Casual Leave', CURDATE() + INTERVAL 3 DAY, 'Forenoon', CURDATE() + INTERVAL 3 DAY, 'Afternoon', 'Parent-Teacher meeting', 'pending', NULL, 'pending', CURDATE() + INTERVAL -1 DAY),
-('FAC002', 'CSE', 'Casual Leave', CURDATE() + INTERVAL 7 DAY, 'Forenoon', CURDATE() + INTERVAL 9 DAY, 'Afternoon', 'Outstation work', 'pending', NULL, 'pending', CURDATE() + INTERVAL -2 DAY);
+('FAC001', 'CSE', 'Casual Leave', CURDATE() + INTERVAL 3 DAY, 'Forenoon', CURDATE() + INTERVAL 3 DAY, 'Afternoon', 'Parent-Teacher meeting', 1, 'pending', NULL, 'pending', CURDATE() + INTERVAL -1 DAY),
+('FAC002', 'CSE', 'Casual Leave', CURDATE() + INTERVAL 7 DAY, 'Forenoon', CURDATE() + INTERVAL 9 DAY, 'Afternoon', 'Outstation work', 3, 'pending', NULL, 'pending', CURDATE() + INTERVAL -2 DAY);
 
 -- =====================================================================
 -- ARRANGEMENTS (Substitute arrangements for leave requests)

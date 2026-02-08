@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS lms_cit_prod;
-CREATE DATABASE lms_cit_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE lms_cit_prod;
+DROP DATABASE IF EXISTS lms_cit;
+CREATE DATABASE lms_cit CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE lms_cit;
 
 -- Create departments table first since it's referenced
 CREATE TABLE departments (
@@ -40,7 +40,7 @@ CREATE TABLE holidays (
   holiday_id INT AUTO_INCREMENT PRIMARY KEY,
   date DATE NOT NULL UNIQUE,
   name VARCHAR(100) NOT NULL,
-  description VARCHAR(255),
+  type VARCHAR(255),
   academic_year YEAR,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   
@@ -52,7 +52,7 @@ CREATE TABLE leave_requests (
   leave_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id VARCHAR(50) NOT NULL,
   department_code VARCHAR(20) NOT NULL,
-  leave_type ENUM('Casual Leave', 'OOD', 'Earned Leave', 'Special Casual Leave','Loss of Pay','Restricted Holiday','Maternity Leave','Vacation Leave') NOT NULL,
+  leave_type ENUM('Casual Leave', 'OOD', 'Earned Leave', 'Special Casual Leave','Loss of Pay','Restricted Holiday',"Compensatory Off",'Maternity Leave','Vacation Leave') NOT NULL,
   start_date DATE NOT NULL,
   start_session ENUM('Forenoon','Afternoon') NOT NULL,
   end_date DATE NOT NULL,
@@ -60,21 +60,7 @@ CREATE TABLE leave_requests (
   reason TEXT NOT NULL,
   
   -- Fixed duration calculation
-  days DECIMAL(6,2) GENERATED ALWAYS AS (
-    CASE 
-      WHEN start_date = end_date THEN
-        CASE 
-          WHEN start_session = 'Forenoon' AND end_session = 'Afternoon' THEN 1.0
-          WHEN start_session = 'Forenoon' AND end_session = 'Forenoon' THEN 0.5
-          WHEN start_session = 'Afternoon' AND end_session = 'Afternoon' THEN 0.5
-          ELSE 0.0
-        END
-      ELSE
-        (DATEDIFF(end_date, start_date) + 1) -
-        (CASE WHEN start_session = 'Afternoon' THEN 0.5 ELSE 0 END) -
-        (CASE WHEN end_session = 'Forenoon' THEN 0.5 ELSE 0 END)
-    END
-  ) STORED,
+  days DECIMAL(6,2) NOT NULL,
   final_substitute_status ENUM('pending','accepted','rejected') DEFAULT 'pending',
   hod_status ENUM('pending','approved','rejected') DEFAULT 'pending',
   principal_status ENUM('pending','approved','rejected') DEFAULT 'pending',
