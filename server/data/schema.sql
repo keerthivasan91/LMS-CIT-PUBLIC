@@ -52,7 +52,7 @@ CREATE TABLE leave_requests (
   leave_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id VARCHAR(50) NOT NULL,
   department_code VARCHAR(20) NOT NULL,
-  leave_type ENUM('Casual Leave', 'OOD', 'Earned Leave', 'Special Casual Leave','Loss of Pay','Restricted Holiday',"Compensatory Off",'Maternity Leave','Vacation Leave') NOT NULL,
+  leave_type ENUM('Casual Leave', 'OOD', 'Earned Leave', 'Special Casual Leave','Loss of Pay','Restricted Holiday',"",'Maternity Leave','Vacation Leave') NOT NULL,
   start_date DATE NOT NULL,
   start_session ENUM('Forenoon','Afternoon') NOT NULL,
   end_date DATE NOT NULL,
